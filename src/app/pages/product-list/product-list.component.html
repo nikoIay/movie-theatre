@@ -8,34 +8,22 @@
     </thead>
 
     <tbody>
-        <tr>
-            <td>Name</td>
-            <td>1</td>
+        <tr *ngFor="let position of productPositions">
+            <td>{{ position.product.name }}</td>
+            <td>{{ position.product.price }}</td>
 
             <td>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-secondary">-</button>
-                    <div class="pt-2 px-3">2</div>
-                    <button type="button" class="btn btn-primary">+</button>
-                </div>
-            </td>
-        </tr>
-
-        <tr>
-            <td>Name</td>
-            <td>1</td>
-
-            <td>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-secondary">-</button>
-
-                    <div class="pt-2 px-3">2</div>
-
-                    <button type="button" class="btn btn-primary">+</button>
-                </div>
+                <app-quantity-selector
+                    [value]="position.quantity"
+                    [isDisabled]="isSaved"
+                    (change)="onQuantityChanged($event, position)"
+                ></app-quantity-selector>
             </td>
         </tr>
     </tbody>
 </table>
 
-<button class="btn btn-success">Add to cart</button>
+<div class="mt-2">
+    <button class="btn btn-success" (click)="addToCart()" [hidden]="isSaved" [disabled]="isAddingDisabled()">Add to cart</button>
+    <span class="pl-2 text-success" [hidden]="!isSaved">Saved!</span>
+</div>

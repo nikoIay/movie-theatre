@@ -1,0 +1,17 @@
+<div class="btn-group">
+    <button
+        type="button"
+        class="btn btn-sm btn-secondary"
+        [disabled]="value <= 0 || isDisabled"
+        (click)="setValue(value - 1)"
+    >-</button>
+
+    <div class="pt-1 px-3">{{ value }}</div>
+
+    <button
+        type="button"
+        class="btn btn-sm btn-primary"
+        [disabled]="isDisabled"
+        (click)="setValue(value + 1)"
+    >+</button>
+</div>

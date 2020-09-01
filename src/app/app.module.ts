@@ -8,12 +8,14 @@ import {CartComponent} from './pages/cart/cart.component';
 import {ProductListComponent} from './pages/product-list/product-list.component';
 
 import { reducers, metaReducers } from './store/reducers';
+import { QuantitySelectorComponent } from './components/quantity-selector/quantity-selector.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         CartComponent,
-        ProductListComponent
+        ProductListComponent,
+        QuantitySelectorComponent
     ],
     imports: [
         BrowserModule,
