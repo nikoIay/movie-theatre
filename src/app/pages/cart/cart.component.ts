@@ -1,16 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Discounts, Order, OrderItem} from '../../models/order';
+import {Order, OrderItem, OrderItemTotalSum} from '../../models/order';
 import {Store} from '@ngrx/store';
 import {State} from '../../store/reducers';
 import {getOrder} from '../../store/selectors/cart';
 import {Clear} from '../../store/actions/cart';
 import {getDiscounts} from '../../store/selectors/product';
 import {Subscription} from 'rxjs';
-
-interface TotalOrderItemSum {
-    sum: number;
-    isDiscounted: boolean;
-}
+import {Discounts} from '../../models/product';
+import {OrderService} from '../../services/order.service';
 
 @Component({
     selector: 'app-cart',
@@ -23,7 +20,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription = new Subscription();
 
-    constructor(private store: Store<State>) {
+    constructor(private store: Store<State>, private orderService: OrderService) {
         const orderSub = store.select(getOrder).subscribe((order: Order) => {
             this.order = order;
         });
@@ -36,20 +33,12 @@ export class CartComponent implements OnInit, OnDestroy {
         this.subscription.add(discountsSub);
     }
 
-    get totalSums(): TotalOrderItemSum[] {
-        return this.order.map((item: OrderItem) => {
-            const hasDiscount = this.discounts[item.product.id] !== undefined;
-            const sum = hasDiscount ? this.discounts[item.product.id](item) : item.product.price * item.quantity;
-
-            return {
-                sum,
-                isDiscounted: hasDiscount && item.product.price * item.quantity > sum
-            };
-        });
+    get totalSums(): OrderItemTotalSum[] {
+        return this.orderService.countOrderItemTotalSums(this.order, this.discounts);
     }
 
     get orderSum(): number {
-        return this.totalSums.reduce((sum, curr) => sum + curr.sum, 0);
+        return this.orderService.countOrderTotalSum(this.totalSums);
     }
 
     ngOnInit(): void {

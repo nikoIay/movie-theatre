@@ -23,7 +23,6 @@ export class AddProductComponent implements OnInit {
         this.subscription = store.select(getNextProductId)
             .subscribe((id: number) => {
                 this.nextProductId = id;
-                console.log(id);
             });
     }
 

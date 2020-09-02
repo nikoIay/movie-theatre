@@ -1,6 +1,5 @@
 import * as actions from '../actions/product';
-import {Product} from '../../models/product';
-import {Discounts, OrderItem} from '../../models/order';
+import {Discounts, Product} from '../../models/product';
 
 export interface State {
     products: Product[];
@@ -22,14 +21,7 @@ export const initialState: State = {
         name: 'Soda'
     }],
     discounts: {
-        2: (item: OrderItem) => {
-            const discountPackSize = 5;
-            const pricePerPack = 3 * item.product.price;
-            const numOfDiscountedPacks = Math.floor(item.quantity / discountPackSize);
-            const numOfUndiscountProducts = item.quantity % discountPackSize;
-
-            return pricePerPack * numOfDiscountedPacks + item.product.price * numOfUndiscountProducts;
-        }
+        2: {from: 5, to: 3}
     }
 };
 

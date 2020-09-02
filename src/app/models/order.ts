@@ -7,8 +7,8 @@ export interface OrderItem {
 
 export type Order = OrderItem[];
 
-export type ProductListPriceDiscount = (orderItem: OrderItem) => number;
-
-export interface Discounts {
-    [productId: number]: ProductListPriceDiscount;
+export interface OrderItemTotalSum {
+    orderItem: OrderItem;
+    sum: number;
+    isDiscounted: boolean;
 }

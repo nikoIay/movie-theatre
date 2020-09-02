@@ -3,3 +3,12 @@ export interface Product {
     name: string;
     price: number;
 }
+
+export interface ProductDiscount {
+    from: number;
+    to: number;
+}
+
+export interface Discounts {
+    [productId: number]: ProductDiscount;
+}
