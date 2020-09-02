@@ -2,7 +2,7 @@
     <div class="form-group row">
         <label class="col-2 col-form-label">Product Name</label>
 
-        <div class="col-sm-10">
+        <div class="col-10">
             <input
                 type="text"
                 class="form-control"
@@ -15,7 +15,7 @@
     <div class="form-group row">
         <label class="col-2 col-form-label">Price</label>
 
-        <div class="col-sm-10">
+        <div class="col-10">
             <input
                 type="text"
                 class="form-control"
@@ -24,6 +24,50 @@
             >
         </div>
     </div>
+
+    <div class="form-group row">
+        <label class="col-2">Add discount</label>
+
+        <div class="col-10">
+            <div class="form-check">
+                <input
+                    type="checkbox"
+                    class="form-check-input"
+                    formControlName="withDiscount"
+                >
+
+                <label class="form-check-label">Whether add discount to product or not</label>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="form.value.withDiscount">
+        <div class="form-group row">
+            <label class="col-2 col-form-label">From</label>
+
+            <div class="col-10">
+                <input
+                    type="text"
+                    class="form-control"
+                    formControlName="from"
+                    [ngClass]="{'is-invalid': form.get('from').touched && form.get('from').invalid}"
+                >
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-2 col-form-label">To</label>
+
+            <div class="col-10">
+                <input
+                    type="text"
+                    class="form-control"
+                    formControlName="to"
+                    [ngClass]="{'is-invalid': form.get('to').touched && form.get('to').invalid}"
+                >
+            </div>
+        </div>
+    </ng-container>
 
     <button type="submit" class="btn btn-primary" (click)="form.markAllAsTouched()">Submit</button>
     <span class="pl-2 text-success" [hidden]="!isSaved">Successfully added!</span>

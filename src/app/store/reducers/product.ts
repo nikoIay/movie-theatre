@@ -25,12 +25,22 @@ export const initialState: State = {
     }
 };
 
-export function reducer(state = initialState, action: actions.Add) {
+export function reducer(state = initialState, action: actions.ProductAction) {
     switch (action.type) {
-        case actions.ADD: {
+        case actions.ADD_PRODUCT: {
             return {
                 ...state,
                 products: [...state.products, action.payload],
+            };
+        }
+
+        case actions.ADD_DISCOUNT: {
+            const discounts = {...state.discounts};
+            discounts[action.payload.productId] = action.payload.discount;
+
+            return {
+                ...state,
+                discounts
             };
         }
 
