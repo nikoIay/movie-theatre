@@ -4,17 +4,17 @@ import {
     MetaReducer,
 } from '@ngrx/store';
 
-import * as orderReducers from './cart';
+import * as cartReducers from './cart';
 import * as productReducers from './product';
 
 export interface State {
-    cart: orderReducers.State;
-    products: productReducers.State;
+    cart: cartReducers.State;
+    product: productReducers.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
-    cart: orderReducers.reducer,
-    products: productReducers.reducer
+    cart: cartReducers.reducer,
+    product: productReducers.reducer
 };
 
 export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
@@ -27,3 +27,8 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
 }
 
 export const metaReducers: MetaReducer<State>[] = [logger];
+
+export const initialState: State = {
+    cart: cartReducers.initialState,
+    product: productReducers.initialState
+};
