@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {State} from '../../store/reducers';
 import {getProducts} from '../../store/selectors/product';
 import {Store} from '@ngrx/store';
@@ -6,6 +6,7 @@ import {Product} from '../../models/product';
 import {map} from 'rxjs/operators';
 import {Order, OrderItem} from '../../models/order';
 import {Add} from '../../store/actions/cart';
+import {Subscription} from 'rxjs';
 
 interface ProductPosition {
     product: Product;
@@ -17,12 +18,14 @@ interface ProductPosition {
     templateUrl: './product-list.component.html',
     styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
     productPositions: ProductPosition[];
     isSaved = false;
 
+    private subscription: Subscription;
+
     constructor(private store: Store<State>) {
-        store.select(getProducts)
+        this.subscription = store.select(getProducts)
             .pipe(
                 map((products: Product[]): ProductPosition[] => {
                     return products.map(product => ({ product, quantity: 0 }));
@@ -34,6 +37,10 @@ export class ProductListComponent implements OnInit {
     }
 
     ngOnInit(): void {
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     onQuantityChanged(value: number, position: ProductPosition) {

@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Discounts, Order, OrderItem} from '../../models/order';
 import {Store} from '@ngrx/store';
 import {State} from '../../store/reducers';
 import {getOrder} from '../../store/selectors/cart';
 import {Clear} from '../../store/actions/cart';
 import {getDiscounts} from '../../store/selectors/product';
+import {Subscription} from 'rxjs';
 
 interface TotalOrderItemSum {
     sum: number;
@@ -16,18 +17,23 @@ interface TotalOrderItemSum {
     templateUrl: './cart.component.html',
     styleUrls: ['./cart.component.scss']
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
     order: Order = [];
     discounts: Discounts;
 
+    private subscription: Subscription = new Subscription();
+
     constructor(private store: Store<State>) {
-        store.select(getOrder).subscribe((order: Order) => {
+        const orderSub = store.select(getOrder).subscribe((order: Order) => {
             this.order = order;
         });
 
-        store.select(getDiscounts).subscribe((discounts: Discounts) => {
+        const discountsSub = store.select(getDiscounts).subscribe((discounts: Discounts) => {
             this.discounts = discounts;
         });
+
+        this.subscription.add(orderSub);
+        this.subscription.add(discountsSub);
     }
 
     get totalSums(): TotalOrderItemSum[] {
@@ -47,6 +53,10 @@ export class CartComponent implements OnInit {
     }
 
     ngOnInit(): void {
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     clear() {
