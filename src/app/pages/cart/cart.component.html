@@ -1,28 +1,32 @@
-<ng-container *ngIf="(order$ | async).length; else noData">
+<ng-container *ngIf="order.length; else noData">
     <table class="table product-table">
         <thead>
-        <tr>
-            <th>Product name</th>
-            <th>Quantity</th>
-            <th>Price per item</th>
-            <th>Total</th>
-        </tr>
+            <tr>
+                <th>Product name</th>
+                <th>Quantity</th>
+                <th>Price per item</th>
+                <th>Total</th>
+            </tr>
         </thead>
 
         <tbody>
-        <tr *ngFor="let orderItem of order$ | async">
-            <td>{{ orderItem.product.name }}</td>
-            <td>{{ orderItem.quantity }}</td>
-            <td>{{ orderItem.product.price }}</td>
-            <td>2</td>
-        </tr>
+            <tr *ngFor="let orderItem of order; let i = index;">
+                <td>{{ orderItem.product.name }}</td>
+                <td>{{ orderItem.quantity }}</td>
+                <td>{{ orderItem.product.price }}</td>
+
+                <td>
+                    <span>{{ totalSums[i].sum }}</span>
+                    <span *ngIf="totalSums[i].isDiscounted" class="pl-2 text-success">(Discounted)</span>
+                </td>
+            </tr>
         </tbody>
 
         <tfoot>
-        <tr>
-            <td class="font-weight-bold" colspan="3">Sum</td>
-            <td class="font-weight-bold">6666</td>
-        </tr>
+            <tr>
+                <td class="font-weight-bold" colspan="3">Sum</td>
+                <td class="font-weight-bold">{{ orderSum }}</td>
+            </tr>
         </tfoot>
     </table>
 

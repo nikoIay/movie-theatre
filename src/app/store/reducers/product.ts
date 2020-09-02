@@ -23,7 +23,12 @@ export const initialState: State = {
     }],
     discounts: {
         2: (item: OrderItem) => {
-            return 1;
+            const discountPackSize = 5;
+            const pricePerPack = 3 * item.product.price;
+            const numOfDiscountedPacks = Math.floor(item.quantity / discountPackSize);
+            const numOfUndiscountProducts = item.quantity % discountPackSize;
+
+            return pricePerPack * numOfDiscountedPacks + item.product.price * numOfUndiscountProducts;
         }
     }
 };
