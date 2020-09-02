@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
-    selector: 'app-quantity-selector',
-    templateUrl: './quantity-selector.component.html',
-    styleUrls: ['./quantity-selector.component.scss']
+    selector: 'app-number-selector',
+    templateUrl: './number-selector.component.html',
+    styleUrls: ['./number-selector.component.scss']
 })
-export class QuantitySelectorComponent implements OnInit {
+export class NumberSelectorComponent implements OnInit {
     @Input() value: number;
-    @Input() isDisabled: boolean;
+    @Input() isDisabled ? = false;
     @Output() change = new EventEmitter<number>();
 
     constructor() {

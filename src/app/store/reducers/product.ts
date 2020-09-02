@@ -48,4 +48,5 @@ export function reducer(state = initialState, action: actions.Add) {
 }
 
 export const getProducts = (state: State) => state.products;
+export const getNextProductId = (state: State) => state.products[state.products.length - 1].id + 1;
 export const getDiscounts = (state: State) => state.discounts;

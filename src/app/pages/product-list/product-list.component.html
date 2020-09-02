@@ -13,11 +13,11 @@
             <td>{{ position.product.price }}</td>
 
             <td>
-                <app-quantity-selector
+                <app-number-selector
                     [value]="position.quantity"
                     [isDisabled]="isSaved"
                     (change)="onQuantityChanged($event, position)"
-                ></app-quantity-selector>
+                ></app-number-selector>
             </td>
         </tr>
     </tbody>

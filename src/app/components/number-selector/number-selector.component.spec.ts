@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuantitySelectorComponent } from './quantity-selector.component';
+import { NumberSelectorComponent } from './number-selector.component';
 
-describe('QuantitySelectorComponent', () => {
-  let component: QuantitySelectorComponent;
-  let fixture: ComponentFixture<QuantitySelectorComponent>;
+describe('NumberSelectorComponent', () => {
+  let component: NumberSelectorComponent;
+  let fixture: ComponentFixture<NumberSelectorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuantitySelectorComponent ]
+      declarations: [ NumberSelectorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuantitySelectorComponent);
+    fixture = TestBed.createComponent(NumberSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

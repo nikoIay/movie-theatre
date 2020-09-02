@@ -8,6 +8,11 @@ export const getProducts = createSelector(
     productReducers.getProducts
 );
 
+export const getNextProductId = createSelector(
+    getProductState,
+    productReducers.getNextProductId
+);
+
 export const getDiscounts = createSelector(
     getProductState,
     productReducers.getDiscounts
