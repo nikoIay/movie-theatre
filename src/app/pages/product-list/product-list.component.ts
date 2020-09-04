@@ -56,7 +56,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
             .filter(position => position.quantity > 0)
             .map(position => ({...position} as OrderItem));
 
+        this.productPositions.forEach(p => {
+            p.quantity = 0;
+        });
+
         this.store.dispatch(new Add(order));
         this.isSaved = true;
+
+        setTimeout(() => { this.isSaved = false; }, 1000);
     }
 }
