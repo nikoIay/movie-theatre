@@ -1,5 +1,6 @@
 import * as actions from '../actions/cart';
 import {Order, OrderItem} from '../../models/order';
+import {getStateFromLocalStorage, saveStateToLocalStorage} from '../../services/local-storage';
 
 export interface State {
     order: Order;
@@ -9,10 +10,22 @@ export const initialState: State = {
     order: []
 };
 
-export function reducer(state = initialState, action: actions.CartAction) {
+const LOCAL_STORAGE_KEY = 'cartState';
+
+function saveCartState(state: object): object {
+    return saveStateToLocalStorage(LOCAL_STORAGE_KEY, state);
+}
+
+function getInitState() {
+     return getStateFromLocalStorage(LOCAL_STORAGE_KEY, initialState);
+}
+
+export function reducer(state, action: actions.CartAction) {
+    const normalizedState = state ? state : getInitState();
+
     switch (action.type) {
         case actions.ADD: {
-            const order: Order = JSON.parse(JSON.stringify(state.order)); // deep copy of object
+            const order: Order = JSON.parse(JSON.stringify(normalizedState.order)); // deep copy of object
             const newOrderItems = [];
 
             action.payload.forEach((item: OrderItem, i) => {
@@ -25,21 +38,21 @@ export function reducer(state = initialState, action: actions.CartAction) {
                 }
             });
 
-            return {
-                ...state,
+            return saveCartState({
+                ...normalizedState,
                 order: [...order, ...newOrderItems]
-            };
+            });
         }
 
         case actions.CLEAR: {
-            return {
-                ...state,
+            return saveCartState({
+                ...normalizedState,
                 order: [],
-            };
+            });
         }
 
         default:
-            return state;
+            return normalizedState;
     }
 }
 

@@ -1,5 +1,6 @@
 import * as actions from '../actions/product';
 import {Discounts, Product} from '../../models/product';
+import {getStateFromLocalStorage, saveStateToLocalStorage} from '../../services/local-storage';
 
 export interface State {
     products: Product[];
@@ -25,27 +26,39 @@ export const initialState: State = {
     }
 };
 
-export function reducer(state = initialState, action: actions.ProductAction) {
+const LOCAL_STORAGE_KEY = 'productState';
+
+function saveProductState(state: object): object {
+    return saveStateToLocalStorage(LOCAL_STORAGE_KEY, state);
+}
+
+function getInitState() {
+    return getStateFromLocalStorage(LOCAL_STORAGE_KEY, initialState);
+}
+
+export function reducer(state, action: actions.ProductAction) {
+    const normalizedState = state ? state : getInitState();
+
     switch (action.type) {
         case actions.ADD_PRODUCT: {
-            return {
-                ...state,
-                products: [...state.products, action.payload],
-            };
+            return saveProductState({
+                ...normalizedState,
+                products: [...normalizedState.products, action.payload],
+            });
         }
 
         case actions.ADD_DISCOUNT: {
-            const discounts = {...state.discounts};
+            const discounts = {...normalizedState.discounts};
             discounts[action.payload.productId] = action.payload.discount;
 
-            return {
-                ...state,
+            return saveProductState({
+                ...normalizedState,
                 discounts
-            };
+            });
         }
 
         default:
-            return state;
+            return normalizedState;
     }
 }
 
